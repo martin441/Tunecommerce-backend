@@ -1,3 +1,7 @@
-const prueba = function (prueba) {
-  return prueba;
-};
+const Sequelize = require("sequelize");
+const db = new Sequelize("tune", null, null, {
+  host: "localhost",
+  dialect: "postgres",
+  logging: false,
+});
+module.exports = db;
