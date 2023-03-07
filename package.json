@@ -1,0 +1,17 @@
+{
+  "name": "tune",
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.21",
+    "pg": "^8.10.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.29.1"
+  },
+  "scripts": {
+    "start": "nodemon api/server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
