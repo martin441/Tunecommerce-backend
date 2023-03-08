@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
-const db = require("./config");
+const db = require("./config"); 
+const models = require("./models/index");
 
 app.use(express.static("build"));
 app.use(express.json());
@@ -13,6 +14,6 @@ app.use((err, req, res, next) => {
   res.status(500).send(err.message);
 });
 
-db.sync({ force: false }).then(() => {
+db.sync({ force: true }).then(() => {
   app.listen(3001, () => console.log("Servidor escuchando en el puerto 3001"));
 });
