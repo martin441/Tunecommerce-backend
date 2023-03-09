@@ -5,8 +5,6 @@ class Review extends S.Model {}
 
 Review.init(
   {
-    //userId: { type: S.INTEGER },
-    //productId: { type: S.INTEGER },
     description: { type: S.TEXT },
     date: { type: S.DATE },
   },

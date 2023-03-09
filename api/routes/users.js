@@ -3,7 +3,7 @@ const router = express.Router();
 const { generateToken, validateToken } = require("../config/token");
 const validateAuth = require("../middlewares/auth");
 // const controller = require("../controllers/user")
-const User = require("../models/users")
+const User = require("../models/User")
 
 //Ruta para registro:
 router.post("/register", (req, res) => {
@@ -47,3 +47,5 @@ router.put("/update", validateAuth, (req, res) => {
     res.status(500).send('Error al actualizar los datos del usuario');
   });
 });
+
+module.exports = router

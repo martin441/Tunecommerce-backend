@@ -42,11 +42,11 @@ User.init(
       isEmail: true,
       unique: true,
     },
-    adress: {
+    address: {
       type: S.STRING,
       allowNull: false,
     },
-    celNumber: {
+    celnumber: {
       type: S.INTEGER,
       allowNull: false,
     },
@@ -65,7 +65,8 @@ User.init(
       defaultValue: false,
     },
   },
-  { sequelize: db, modelName: "user" }
+  { sequelize: db, modelName: "user", timestamps: false
+}
 );
 
 User.addHook("beforeCreate", (user) => {
