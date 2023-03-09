@@ -22,8 +22,8 @@ Review.belongsTo(Product);
 User.hasMany(Review);
 Review.belongsTo(User);
 
-Cart.hasMany(Cartitem);
 Cartitem.belongsTo(Cart);
+Cart.hasMany(Cartitem);
 
 Cart.belongsTo(User);
 User.hasOne(Cart);
