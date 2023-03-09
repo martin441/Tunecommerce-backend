@@ -4,8 +4,10 @@ const db = require("./config");
 const models = require("./models/index");
 const routes = require("./routes");
 const cookieParser = require("cookie-parser");
-//const fakedata = require("./fakedata");
+const fakedata = require("./fakedata");
+const cors = require("cors");
 
+app.use(cors());
 app.use(express.static("build"));
 app.use(express.json());
 app.use(cookieParser());

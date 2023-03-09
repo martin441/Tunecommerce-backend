@@ -5,7 +5,7 @@ const { Cart, Cartitem, User, Product } = require("../models");
 router.get("/:userId", (req, res) => {
   Cart.findOne({
     where: {
-      userId: req.params.id,
+      userId: req.params.userId,
     },
   }).then((cart) => {
     Cartitem.findAll({
@@ -20,19 +20,28 @@ router.get("/:userId", (req, res) => {
 
 router.post("/:userId/:productId", (req, res) => {
   const { cantidad } = req.body;
-  User.findByPk(req.params.userId).then((user) => {
-    Cart.findOrCreate({
-      where: { userId: user.id },
-    }).then((cart) => {
-      cart.setUser(user);
-      Cartitem.create({ cantidad }).then((cartitem) => {
-        cartitem.setCart(cart);
-        Product.findByPk(req.params.productId).then((product) => {
-          cartitem.setProduct(product);
+  User.findByPk(req.params.userId)
+    .then((user) => {
+      Cart.findOrCreate({
+        where: { userId: user.id },
+        include: [{ model: User }],
+      }).then((cart) => {
+        Cartitem.create(
+          { cantidad },
+          {
+            include: [{ model: Cart }],
+          }
+        ).then((cartitem) => {
+          cartitem.setCart(cart[0]);
+          Product.findByPk(req.params.productId).then((product) => {
+            cartitem.setProduct(product);
+          });
         });
       });
+    })
+    .then(() => {
+      res.sendStatus(204);
     });
-  });
 });
 
 router.delete("/:userId/:productId", (req, res, next) => {
@@ -61,14 +70,17 @@ router.put("/:userId/:productId", (req, res, next) => {
     },
   })
     .then((cart) => {
-      Cartitem.update(cantidad, {
-        where: {
-          productId: req.params.productId,
-          cartId: cart.id,
-        },
-        returning: true,
-      }).then(([affectedRows, updated]) => {
-        const cartItem = updated[0];
+      Cartitem.update(
+        { cantidad },
+        {
+          where: {
+            productId: req.params.productId,
+            cartId: cart.id,
+          },
+          returning: true,
+        }
+      ).then((updated) => {
+        const cartItem = updated[1][0];
         res.status(201).send(cartItem);
       });
     })
