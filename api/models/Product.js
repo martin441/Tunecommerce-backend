@@ -16,7 +16,7 @@ Product.init(
     stock: { type: S.INTEGER },
     ranking: { type: S.ARRAY(S.INTEGER) },
   },
-  { sequelize: db, modelName: "product" }
+  { sequelize: db, modelName: "product", timestamps: false }
 );
 
 module.exports = Product;
