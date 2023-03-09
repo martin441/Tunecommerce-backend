@@ -42,7 +42,7 @@ User.init(
       isEmail: true,
       unique: true,
     },
-    adress: {
+    address: {
       type: S.STRING,
       allowNull: false,
     },
