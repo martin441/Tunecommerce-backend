@@ -55,5 +55,4 @@ router.put("/update", validateAuth, (req, res) => {
   });
 });
 
-
 module.exports = router

@@ -5,11 +5,9 @@ class Cartitem extends S.Model {}
 
 Cartitem.init(
   {
-    //cartId: { type: S.INTEGER },
-    //productId: { type: S.INTEGER },
     cantidad: { type: S.INTEGER },
   },
-  { sequelize: db, modelName: "cartitem" }
+  { sequelize: db, modelName: "cartitem", timestamps: false }
 );
 
 module.exports = Cartitem;

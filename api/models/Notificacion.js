@@ -5,8 +5,6 @@ class Notificacion extends S.Model {}
 
 Notificacion.init(
   {
-    //userId: { type: S.INTEGER },
-    //orderStatus: { type: S.STRING },
     date: { type: S.DATE },
     message: { type: S.TEXT },
   },

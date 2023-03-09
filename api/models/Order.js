@@ -5,7 +5,6 @@ class Order extends S.Model {}
 
 Order.init(
   {
-    //userId: { type: S.INTEGER },
     status: {type: S.STRING},
     date: {type: S.DATE},
     paymentM: {type: S.STRING}
