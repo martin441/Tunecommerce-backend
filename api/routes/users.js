@@ -16,14 +16,21 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
   User.findOne({ where: { email } }).then((user) => {
-    !user
-      ? res.sendStatus(401)
-      : (payload = { emil: user.email, password: user.password });
+    if(user) return res.sendStatus(401);
+
+    user.validatePassword(password).then((isValid) => {if(!isValid) return res.sendStatus(401)})
+    
+    user.validatePassword(password).then(isValid => 
+      !isValid ? res.send(401) : res.send())
+      
+      const payload = { 
+       emil: user.email,
+       password: user.password 
+     };
+     
     const token = generateToken(payload);
     res.cookie("token", token);
     res.send(payload);
-
-    //Falta que valide la contraseña cuando se hashee ne el modelo
   });
 });
 
