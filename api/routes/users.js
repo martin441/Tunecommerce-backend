@@ -7,8 +7,10 @@ const User = require("../models/User")
 
 //Ruta para registro:
 router.post("/register", (req, res) => {
-  User.create(req.body).then((userCreado) =>
+  User.create(req.body).then((userCreado) => {
+    console.log("BODY ", req.body);
     res.status(201).send(userCreado.dataValue)
+  }
   );
 });
 
@@ -46,6 +48,11 @@ router.get("/me", validateAuth, (req, res) => {
 });
 
 router.put("/update", validateAuth, (req, res) => {
+  if (!req.user) {
+    return res
+      .status(401)
+      .send("Debe iniciar sesión para realizar esta acción");
+  }
   const {celNumber, adress, email, password, isAdmin} = req.body
   User.update({celNumber, adress, email, password, isAdmin}) 
   .then((changes) => res.send(changes))
