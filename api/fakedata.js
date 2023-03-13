@@ -221,6 +221,6 @@ Product.bulkCreate(fakeDataProducts)
   .then((products) => products)
   .catch((error) => console.log("Error al crear productos", error));
 
-User.bulkCreate(fakeDataUsers)
-  .then((products) => products)
-  .catch((error) => console.log("Error al crear productos", error));
+  fakeDataUsers.map(user =>{
+    User.create(user)
+  })
