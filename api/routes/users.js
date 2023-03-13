@@ -6,11 +6,14 @@ const validateAuth = require("../middlewares/auth");
 const User = require("../models/User");
 
 //Ruta para registro:
-router.post("/register", (req, res, next) => {
-  User.create(req.body)
-    .then((userCreado) => res.status(201).send(userCreado.dataValue))
-    .catch(next);
-});
+
+router.post("/register", (req, res) => {
+  User.create(req.body).then((userCreado) => {
+ 
+    res.status(201).send(userCreado.dataValue)
+  }
+  );
+
 
 //Ruta para login:
 router.post("/login", (req, res, next) => {
@@ -42,20 +45,19 @@ router.get("/me", validateAuth, (req, res) => {
   res.send(req.user);
 });
 
-router.put("/update/:id", (req, res) => {
-  const { celnumber, address, email, password, isAdmin } = req.body;
-  User.findOne({
-    where: {
-      id: req.params.id,
-    },
-  }).then((user) => {
-    user
-      .update({ celnumber, address, email, password, isAdmin })
-      .then((changes) => res.send(changes))
-      .catch((error) => {
-        console.error(error);
-        res.status(401).send("Error al actualizar los datos del usuario");
-      });
+
+router.put("/update:id", validateAuth, (req, res) => {
+  if (!req.user) {
+    return res
+      .status(401)
+      .send("Debe iniciar sesión para realizar esta acción");
+  }
+  const {celNumber, adress, email, password, isAdmin} = req.body
+  User.update({celNumber, adress, email, password, isAdmin}) 
+  .then((changes) => res.send(changes))
+  .catch(error => {
+    console.error(error);
+    res.status(401).send('Error al actualizar los datos del usuario');
   });
 });
 
