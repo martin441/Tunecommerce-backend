@@ -3,37 +3,35 @@ const router = express.Router();
 const { generateToken, validateToken } = require("../config/token");
 const validateAuth = require("../middlewares/auth");
 // const controller = require("../controllers/user")
-const User = require("../models/User")
+const User = require("../models/User");
 
 //Ruta para registro:
+
 router.post("/register", (req, res) => {
   User.create(req.body).then((userCreado) => {
-    console.log("BODY ", req.body);
+ 
     res.status(201).send(userCreado.dataValue)
   }
   );
-});
+
 
 //Ruta para login:
-router.post("/login", (req, res) => {
+router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
-  User.findOne({ where: { email } }).then((user) => {
-    if(user) return res.sendStatus(401);
-
-    user.validatePassword(password).then((isValid) => {if(!isValid) return res.sendStatus(401)})
-    
-    user.validatePassword(password).then(isValid => 
-      !isValid ? res.send(401) : res.send())
-      
-      const payload = { 
-       emil: user.email,
-       password: user.password 
-     };
-     
-    const token = generateToken(payload);
-    res.cookie("token", token);
-    res.send(payload);
-  });
+  User.findOne({ where: { email } })
+    .then((user) => {
+      if (!user) return res.sendStatus(401);
+      user.validatePassword(password).then((isValid) => {
+        if (!isValid) return res.sendStatus(401);
+        const payload = {
+          email: user.email,
+          password: user.password,
+        };
+        const token = generateToken(payload);
+        res.cookie("token", token).send(user);
+      });
+    })
+    .catch(next);
 });
 
 // Ruta para el logout
@@ -47,7 +45,8 @@ router.get("/me", validateAuth, (req, res) => {
   res.send(req.user);
 });
 
-router.put("/update", validateAuth, (req, res) => {
+
+router.put("/update:id", validateAuth, (req, res) => {
   if (!req.user) {
     return res
       .status(401)
@@ -58,8 +57,8 @@ router.put("/update", validateAuth, (req, res) => {
   .then((changes) => res.send(changes))
   .catch(error => {
     console.error(error);
-    res.status(500).send('Error al actualizar los datos del usuario');
+    res.status(401).send('Error al actualizar los datos del usuario');
   });
 });
 
-module.exports = router
+module.exports = router;
