@@ -1,6 +1,9 @@
 const Product = require("./models/Product");
 const User = require("./models/User");
 
+User.truncate({ cascade: true, restartIdentity: true });
+Product.truncate({ cascade: true, restartIdentity: true });
+
 const fakeDataProducts = [
   {
     name: "Guitarra Criolla clásica Fonseca para diestros",
@@ -217,10 +220,10 @@ const fakeDataUsers = [
   },
 ];
 
-Product.bulkCreate(fakeDataProducts)
-  .then((products) => products)
-  .catch((error) => console.log("Error al crear productos", error));
+fakeDataProducts.map((product) => {
+  Product.create(product);
+});
 
-  fakeDataUsers.map(user =>{
-    User.create(user)
-  })
+fakeDataUsers.map((user) => {
+  User.create(user);
+});
