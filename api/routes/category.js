@@ -32,4 +32,7 @@ router.delete("/:id", (req, res) => {
     .then((category) => category.destroy())
     .then(() => res.send("categoria eliminada con exito"));
 });
+
+
+
 module.exports = router;
