@@ -9,5 +9,4 @@ router.use("/cart", cartsRouter);
 router.use('/admin', adminRouter);
 router.use('/products', productsRouter);
 
-
 module.exports = router;
