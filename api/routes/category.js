@@ -33,21 +33,6 @@ router.delete("/:id", (req, res) => {
     .then(() => res.send("categoria eliminada con exito"));
 });
 
-// Obtener todos los productos que tengan la categoría buscada
-router.get('/:categoryId/products', (req, res) => {
-
-    const categoryId = req.params.categoryId
-    
-    Products.findAll({
-      where: {
-        CategoryId: categoryId
-      }
-    })
-      .then(products => {
-        res.send(products);
-      })
-  });
-
 
 
 module.exports = router;

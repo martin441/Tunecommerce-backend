@@ -36,11 +36,14 @@ router.post("/:userId", (req, res) => {
 });
 
 //Buscar por categorias 
-router.get("/:categoryId", (req,res) => {
+router.get("/filter/:categoryId", (req,res) => {
 
   const category = req.params.categoryId
-  Products.findAll({where: { category: category }})
-  .then((products) => res.send(products))
+  Products.findAll({where: { categoryId: category }})
+  .then((products) => { 
+  !products[0] ? 
+  res.send("Not found")
+  : res.send(products)})
 })
 
 router.delete("/:productId", (req, res) => {
