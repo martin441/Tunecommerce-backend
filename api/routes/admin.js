@@ -36,13 +36,14 @@ router.get("/", validateAuth, (req, res) => {
 });
 
 // Eliminar usuarios
-router.delete("/:userId", (req, res) => {
+router.delete("/:userId", validateAuth, (req, res) => {
   if (!req.user.isAdmin) {
     return res.status(403).send("No tienes permiso para realizar esta acción");
   }
   User.findByPk(req.params.userId).then((user) =>
     !user ? res.status(404).send("El usuario no existe") : user.destroy()
-  );
+    .then(() => res.sendStatus(204))
+    )
 });
 
 module.exports = router;
