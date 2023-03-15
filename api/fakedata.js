@@ -1,6 +1,10 @@
 const Product = require("./models/Product");
+const User = require("./models/User");
 
-const fakeData = [
+User.truncate({ cascade: true, restartIdentity: true });
+Product.truncate({ cascade: true, restartIdentity: true });
+
+const fakeDataProducts = [
   {
     name: "Guitarra Criolla clásica Fonseca para diestros",
     description:
@@ -194,6 +198,32 @@ const fakeData = [
   },
 ];
 
-Product.bulkCreate(fakeData)
-  .then((products) => products)
-  .catch((error) => console.log("Error al crear productos", error));
+const fakeDataUsers = [
+  {
+    username: "Marquitos",
+    name: "Marco",
+    lastname: "Polo",
+    password: "12345678",
+    email: "marco@mail.com",
+    celnumber: 38745,
+    address: "Los patitos 520",
+    isAdmin: true,
+  },
+  {
+    username: "Anacleto",
+    name: "Anacleto",
+    lastname: "Perez",
+    password: "12345678",
+    email: "anacleto@mail.com",
+    celnumber: 38745,
+    address: "Los patitos 520",
+  },
+];
+
+fakeDataProducts.map((product) => {
+  Product.create(product);
+});
+
+fakeDataUsers.map((user) => {
+  User.create(user);
+});
