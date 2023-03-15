@@ -24,7 +24,7 @@ router.post("/login", (req, res, next) => {
         const payload = {
           email: user.email,
           password: user.password,
-          isAdmin: user.isAdmin
+          isAdmin: user.isAdmin,
         };
         const token = generateToken(payload);
         res.cookie("token", token).send(user);
@@ -44,15 +44,19 @@ router.get("/me", validateAuth, (req, res) => {
   res.send(req.user);
 });
 
-router.put("/update:id", validateAuth, (req, res) => {
+router.put("/update/:id", validateAuth, (req, res) => {
   if (!req.user) {
     return res
       .status(401)
       .send("Debe iniciar sesión para realizar esta acción");
   }
-  const { celNumber, adress, email, password, isAdmin } = req.body;
-  User.update({ celNumber, adress, email, password, isAdmin })
-    .then((changes) => res.send(changes))
+  const { celNumber, address, email, password, isAdmin } = req.body;
+  User.update(
+    { celNumber, address, email, password, isAdmin },
+    { where: { id: req.params.id }, 
+    returning: true }
+  )
+    .then((changes) => res.send(changes[1][0]))
     .catch((error) => {
       console.error(error);
       res.status(401).send("Error al actualizar los datos del usuario");
