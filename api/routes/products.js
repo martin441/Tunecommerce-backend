@@ -3,6 +3,7 @@ const { User } = require("../models");
 const router = express.Router();
 const Products = require("../models/Product");
 const Category = require("../models/Category");
+const { Op } = require("sequelize");
 
 router.get("/", (req, res) => {
   Products.findAll().then((products) => res.json(products));
@@ -63,6 +64,22 @@ router.put("/:productId", (req, res) => {
       returning: true,
     }
   ).then((product) => res.send(product[1][0]));
+});
+
+router.get("/search/:productName", (req, res) => {
+  const productName = req.params.productName;
+
+  Products.findAll({
+    where: {
+      name: {
+        [Op.iLike]: `%${productName}%`,
+      },
+    },
+  })
+    .then((products) => {
+      res.send(products);
+    })
+    .catch(() => res.send("No se han encontrado resultados"));
 });
 
 module.exports = router;
