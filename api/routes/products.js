@@ -3,6 +3,7 @@ const { User } = require("../models");
 const router = express.Router();
 const Products = require("../models/Product");
 const Category = require("../models/Category");
+const { Op } = require("sequelize");
 
 router.get("/", (req, res) => {
   Products.findAll().then((products) => res.json(products));
@@ -35,16 +36,13 @@ router.post("/:userId", (req, res) => {
   });
 });
 
-//Buscar por categorias 
-router.get("/filter/:categoryId", (req,res) => {
-
-  const category = req.params.categoryId
-  Products.findAll({where: { categoryId: category }})
-  .then((products) => { 
-  !products[0] ? 
-  res.send("Not found")
-  : res.send(products)})
-})
+//Buscar por categorias
+router.get("/filter/:categoryId", (req, res) => {
+  const category = req.params.categoryId;
+  Products.findAll({ where: { categoryId: category } }).then((products) => {
+    !products[0] ? res.send("Not found") : res.send(products);
+  });
+});
 
 router.delete("/:productId", (req, res) => {
   Products.destroy({
@@ -66,6 +64,22 @@ router.put("/:productId", (req, res) => {
       returning: true,
     }
   ).then((product) => res.send(product[1][0]));
+});
+
+router.get("/search/:productName", (req, res) => {
+  const productName = req.params.productName;
+
+  Products.findAll({
+    where: {
+      name: {
+        [Op.iLike]: `%${productName}%`,
+      },
+    },
+  })
+    .then((products) => {
+      res.send(products);
+    })
+    .catch(() => res.send("No se han encontrado resultados"));
 });
 
 module.exports = router;
