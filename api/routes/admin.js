@@ -4,16 +4,16 @@ const validateAuth = require("../middlewares/auth");
 const User = require("../models/User");
 
 // Promover usuarios administradores
-router.put("/:userId", validateAuth, (req, res) => {
-  if (!req.user) {
-    return res
-      .status(401)
-      .send("Debe iniciar sesión para realizar esta acción");
-  }
+router.put("/:userId", (req, res) => {
+  // if (!req.user) {
+  //   return res
+  //     .status(401)
+  //     .send("Debe iniciar sesión para realizar esta acción");
+  // }
 
-  if (!req.user.isAdmin) {
-    return res.status(403).send("No tienes permiso para realizar esta acción");
-  }
+  // if (!req.user.isAdmin) {
+  //   return res.status(403).send("No tienes permiso para realizar esta acción");
+  // }
 
   User.update(
     { isAdmin: req.body.isAdmin },
@@ -26,24 +26,25 @@ router.put("/:userId", validateAuth, (req, res) => {
 });
 
 // Ver todos los usuarios
-router.get("/", validateAuth, (req, res) => {
-  if (!req.user) {
-    return res
-      .status(401)
-      .send("Debe iniciar sesión para realizar esta acción");
-  }
+router.get("/", (req, res) => {
+  // if (!req.user) {
+  //   return res
+  //     .status(401)
+  //     .send("Debe iniciar sesión para realizar esta acción");
+  // }
   User.findAll().then((usuarios) => res.send(usuarios));
 });
 
 // Eliminar usuarios
-router.delete("/:userId", validateAuth, (req, res) => {
-  if (!req.user.isAdmin) {
-    return res.status(403).send("No tienes permiso para realizar esta acción");
-  }
+router.delete("/:userId", (req, res) => {
+  // if (!req.user.isAdmin) {
+  //   return res.status(403).send("No tienes permiso para realizar esta acción");
+  // }
   User.findByPk(req.params.userId).then((user) =>
-    !user ? res.status(404).send("El usuario no existe") : user.destroy()
-    .then(() => res.sendStatus(204))
-    )
+    !user
+      ? res.status(404).send("El usuario no existe")
+      : user.destroy().then(() => res.sendStatus(204))
+  );
 });
 
 module.exports = router;
