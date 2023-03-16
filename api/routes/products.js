@@ -18,7 +18,7 @@ router.post("/:userId", (req, res) => {
   const { name, description, price, image, stock, category } = req.body;
 
   User.findByPk(req.params.userId).then((user) => {
-    Category.findOne({ where: { name: category } }).then((category) => {
+    Category.findOne({ where: { id: category } }).then((category) => {
       Products.create(
         {
           name,
@@ -35,16 +35,13 @@ router.post("/:userId", (req, res) => {
   });
 });
 
-//Buscar por categorias 
-router.get("/filter/:categoryId", (req,res) => {
-
-  const category = req.params.categoryId
-  Products.findAll({where: { categoryId: category }})
-  .then((products) => { 
-  !products[0] ? 
-  res.send("Not found")
-  : res.send(products)})
-})
+//Buscar por categorias
+router.get("/filter/:categoryId", (req, res) => {
+  const category = req.params.categoryId;
+  Products.findAll({ where: { categoryId: category } }).then((products) => {
+    !products[0] ? res.send("Not found") : res.send(products);
+  });
+});
 
 router.delete("/:productId", (req, res) => {
   Products.destroy({
