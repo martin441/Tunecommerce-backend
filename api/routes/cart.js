@@ -63,6 +63,23 @@ router.delete("/:userId/:productId", (req, res, next) => {
     .catch(next);
 });
 
+router.delete("/:userId", (req, res, next) => {
+  Cart.findOne({
+    where: {
+      userId: req.params.userId,
+    },
+  })
+    .then((cart) => {
+      Cartitem.destroy({
+        where: {
+          cartId: cart.id,
+        },
+      });
+    })
+    .then(() => res.sendStatus(202))
+    .catch(next);
+});
+
 router.put("/:userId/:productId", (req, res, next) => {
   const { cantidad } = req.body;
   Cart.findOne({
