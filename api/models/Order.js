@@ -5,9 +5,9 @@ class Order extends S.Model {}
 
 Order.init(
   {
-    status: {type: S.STRING},
-    date: {type: S.DATE},
-    paymentM: {type: S.STRING}
+    status: { type: S.STRING },
+    date: { type: S.STRING },
+    paymentM: { type: S.STRING },
   },
   { sequelize: db, modelName: "order" }
 );
