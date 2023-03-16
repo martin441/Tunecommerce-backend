@@ -44,17 +44,16 @@ router.get("/me", validateAuth, (req, res) => {
   res.send(req.user);
 });
 
-router.put("/update/:id", validateAuth, (req, res) => {
-  if (!req.user) {
-    return res
-      .status(401)
-      .send("Debe iniciar sesión para realizar esta acción");
-  }
+router.put("/update/:id", (req, res) => {
+  // if (!req.user) {
+  //   return res
+  //     .status(401)
+  //     .send("Debe iniciar sesión para realizar esta acción");
+  // }
   const { celNumber, address, email, password, isAdmin } = req.body;
   User.update(
     { celNumber, address, email, password, isAdmin },
-    { where: { id: req.params.id }, 
-    returning: true }
+    { where: { id: req.params.id }, returning: true, individualHooks: true }
   )
     .then((changes) => res.send(changes[1][0]))
     .catch((error) => {
