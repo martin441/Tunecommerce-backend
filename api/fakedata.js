@@ -1,8 +1,11 @@
+const express = require("express");
 const Product = require("./models/Product");
 const User = require("./models/User");
+const Category = require("./models/Category");
 
 User.truncate({ cascade: true, restartIdentity: true });
 Product.truncate({ cascade: true, restartIdentity: true });
+Category.truncate({ cascade: true, restartIdentity: true });
 
 const fakeDataProducts = [
   {
@@ -72,6 +75,8 @@ const fakeDataProducts = [
     ranking: [1, 1, 5, 4, 4, 3, 3, 4],
   },
 
+  // 5
+
   {
     name: "Violín 1/4 para estudiante",
     description: "Arco incluído. Estuche incluído. Ideal para estudio",
@@ -131,6 +136,8 @@ const fakeDataProducts = [
     ranking: [5, 4, 2, 3, 5, 3, 2, 5, 3],
   },
 
+  // 10
+
   {
     name: "Trompeta Knight Jbtr-300",
     description:
@@ -170,6 +177,8 @@ const fakeDataProducts = [
     stock: 16,
     ranking: [5, 5, 5, 3, 5, 3, 5, 5, 5],
   },
+
+  //13
 
   {
     name: "Ukelele Soprano",
@@ -220,8 +229,56 @@ const fakeDataUsers = [
   },
 ];
 
-fakeDataProducts.map((product) => {
-  Product.create(product);
+const fakeDataCategories = [
+  {
+    name: "Guitarras",
+    description: "Guitarras de concierto y estudio.",
+  },
+  {
+    name: "Violines",
+    description: "Violines de calidad, y de todos los tamaños.",
+  },
+  {
+    name: "Trompetas",
+    description: "Trompetas de estudio y concierto.",
+  },
+  {
+    name: "Ukeleles",
+    description: "Ukeleles variados.",
+  },
+];
+
+let arrayPromesa = fakeDataCategories.map((category) => {
+  return Category.create(category);
+});
+
+Promise.all(arrayPromesa).then(() => {
+  for (let i = 0; i < 5; i++) {
+    Category.findOne({ where: { name: "Guitarras" } }).then((category) => {
+      Product.create(
+        { ...fakeDataProducts[i], categoryId: category.id },
+        { include: [{ model: Category }] }
+      );
+    });
+  }
+
+  for (let i = 5; i < 10; i++) {
+    Category.findOne({ where: { name: "Violines" } }).then((category) => {
+      Product.create(
+        { ...fakeDataProducts[i], categoryId: category.id },
+        { include: [{ model: Category }] }
+      );
+    });
+  }
+
+  for (let i = 13; i < fakeDataProducts.length; i++) {
+    Category.findOne({ where: { name: "Ukeleles" } }).then((category) => {
+      Product.create(
+        { ...fakeDataProducts[i], categoryId: category.id },
+        { include: [{ model: Category }] }
+      );
+    });
+  }
 });
 
 fakeDataUsers.map((user) => {
