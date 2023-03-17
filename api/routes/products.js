@@ -1,4 +1,5 @@
 const express = require("express");
+const { Op } = require("sequelize");
 const { User } = require("../models");
 const router = express.Router();
 const Products = require("../models/Product");
@@ -13,6 +14,21 @@ router.get("/:productId", (req, res) => {
   Products.findOne({ where: { id: req.params.productId } }).then((product) =>
     res.json(product)
   );
+});
+
+//buscar producto
+router.get("/search/:productName", (req, res) => {
+  const productName = req.params.productName.toLowerCase();
+
+  Products.findAll({
+    where: {
+      name: {
+        [Op.iLike]: `%${productName}%`,
+      },
+    },
+  }).then((products) => {
+    !products[0] ? res.send("Not found") : res.send(products);
+  });
 });
 
 router.post("/:userId", (req, res) => {
