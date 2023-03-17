@@ -87,7 +87,7 @@ router.post("/:userId", (req, res) => {
             .then(() => {
               transporter.sendMail({
                 from: "tunecommerce@hotmail.com", // cambiar por  ${admin.email}
-                to: `matute_98ca@hotmail.com`, //cambiar por ${user.email}
+                to: `${user.email}`, //cambiar por 
                 subject: "🎸Confirmacion de compra🎸",
                 html: `<p><b>Has confirmado tu compra en TUNEcommerce</b></p>
                 <p>Muchas gracias por confiar en nosotros.</p>
