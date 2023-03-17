@@ -29,7 +29,6 @@ router.post("/:userId/:productId", (req, res) => {
         Cartitem.create(
           { cantidad },
           {
-            // ber cuando usar el include de modelos
             include: [{ model: Cart }],
           }
         ).then((cartitem) => {

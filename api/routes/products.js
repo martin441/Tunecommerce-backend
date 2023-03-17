@@ -5,20 +5,21 @@ const router = express.Router();
 const Products = require("../models/Product");
 const Category = require("../models/Category");
 
+//buscar todos los productos
 router.get("/", (req, res) => {
   Products.findAll().then((products) => res.json(products));
 });
 
+//buscar un producto en particular
 router.get("/:productId", (req, res) => {
   Products.findOne({ where: { id: req.params.productId } }).then((product) =>
     res.json(product)
   );
 });
 
-//buscar producto
+//buscar producto por el nombre
 router.get("/search/:productName", (req, res) => {
   const productName = req.params.productName.toLowerCase();
-
   Products.findAll({
     where: {
       name: {
@@ -30,9 +31,9 @@ router.get("/search/:productName", (req, res) => {
   });
 });
 
+//crear producto
 router.post("/:userId", (req, res) => {
   const { name, description, price, image, stock, category } = req.body;
-
   User.findByPk(req.params.userId).then((user) => {
     Category.findOne({ where: { id: category } }).then((category) => {
       Products.create(
@@ -51,7 +52,7 @@ router.post("/:userId", (req, res) => {
   });
 });
 
-//Buscar por categorias
+//Buscar producto por categoria
 router.get("/filter/:categoryId", (req, res) => {
   const category = req.params.categoryId;
   Products.findAll({ where: { categoryId: category } }).then((products) => {
@@ -59,6 +60,7 @@ router.get("/filter/:categoryId", (req, res) => {
   });
 });
 
+//eliminar producto
 router.delete("/:productId", (req, res) => {
   Products.destroy({
     where: {
@@ -69,6 +71,7 @@ router.delete("/:productId", (req, res) => {
   });
 });
 
+//editar producto
 router.put("/:productId", (req, res) => {
   const { name, description, price, image, stock } = req.body;
 
@@ -79,22 +82,6 @@ router.put("/:productId", (req, res) => {
       returning: true,
     }
   ).then((product) => res.send(product[1][0]));
-});
-
-router.get("/search/:productName", (req, res) => {
-  const productName = req.params.productName;
-
-  Products.findAll({
-    where: {
-      name: {
-        [Op.iLike]: `%${productName}%`,
-      },
-    },
-  })
-    .then((products) => {
-      res.send(products);
-    })
-    .catch(() => res.send("No se han encontrado resultados"));
 });
 
 module.exports = router;

@@ -2,14 +2,7 @@ const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
 
-const {
-  Order,
-  Orderitem,
-  Notificacion,
-  User,
-  Cart,
-  Cartitem,
-} = require("../models");
+const { Order, Orderitem, User, Cart, Cartitem } = require("../models");
 
 let transporter = nodemailer.createTransport({
   service: "hotmail",
@@ -48,6 +41,7 @@ router.get("/:userId", (req, res) => {
   });
 });
 
+//crear una orden, agregar sus elementos y confirmar mediante email
 router.post("/:userId", (req, res) => {
   User.findByPk(req.params.userId)
     .then((user) => {
@@ -86,8 +80,8 @@ router.post("/:userId", (req, res) => {
             })
             .then(() => {
               transporter.sendMail({
-                from: "tunecommerce@hotmail.com", // cambiar por  ${admin.email}
-                to: `${user.email}`, //cambiar por 
+                from: "tunecommerce@hotmail.com",
+                to: `${user.email}`,
                 subject: "🎸Confirmacion de compra🎸",
                 html: `<p><b>Has confirmado tu compra en TUNEcommerce</b></p>
                 <p>Muchas gracias por confiar en nosotros.</p>
@@ -102,6 +96,7 @@ router.post("/:userId", (req, res) => {
     });
 });
 
+//editar el status de una orden y confirmar mediante email
 router.put("/:userId/:orderId", (req, res, next) => {
   const { status } = req.body;
   Order.update(
@@ -116,8 +111,8 @@ router.put("/:userId/:orderId", (req, res, next) => {
     User.findByPk(req.params.userId).then((user) => {
       transporter
         .sendMail({
-          from: "tunecommerce@hotmail.com>", // cambiar por  ${admin.email}
-          to: `matute_98ca@hotmail.com`, //cambiar por ${user.email}
+          from: "tunecommerce@hotmail.com>",
+          to: `${user.email}`,
           subject: "🎸Actualizacion estado de compra🎸",
           html: `<p><b>Tu compra se encuentra ${status}</b></p>
           <p>Muchas gracias por confiar en TUNEcommerce.</p>

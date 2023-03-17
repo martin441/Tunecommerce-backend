@@ -6,7 +6,6 @@ const validateAuth = require("../middlewares/auth");
 const User = require("../models/User");
 
 //Ruta para registro:
-
 router.post("/register", (req, res) => {
   User.create(req.body).then((userCreado) => {
     res.status(201).send(userCreado.dataValue);
@@ -44,12 +43,8 @@ router.get("/me", validateAuth, (req, res) => {
   res.send(req.user);
 });
 
+//editar
 router.put("/update/:id", (req, res) => {
-  // if (!req.user) {
-  //   return res
-  //     .status(401)
-  //     .send("Debe iniciar sesión para realizar esta acción");
-  // }
   const { celNumber, address, email, password, isAdmin } = req.body;
   User.update(
     { celNumber, address, email, password, isAdmin },

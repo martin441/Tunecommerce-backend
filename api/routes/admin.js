@@ -1,20 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const validateAuth = require("../middlewares/auth");
 const User = require("../models/User");
+
+// Ver todos los usuarios
+router.get("/", (req, res) => {
+  User.findAll().then((usuarios) => res.send(usuarios));
+});
 
 // Promover usuarios administradores
 router.put("/:userId", (req, res) => {
-  // if (!req.user) {
-  //   return res
-  //     .status(401)
-  //     .send("Debe iniciar sesión para realizar esta acción");
-  // }
-
-  // if (!req.user.isAdmin) {
-  //   return res.status(403).send("No tienes permiso para realizar esta acción");
-  // }
-
   User.update(
     { isAdmin: req.body.isAdmin },
     { where: { id: req.params.userId } }
@@ -25,21 +19,8 @@ router.put("/:userId", (req, res) => {
     );
 });
 
-// Ver todos los usuarios
-router.get("/", (req, res) => {
-  // if (!req.user) {
-  //   return res
-  //     .status(401)
-  //     .send("Debe iniciar sesión para realizar esta acción");
-  // }
-  User.findAll().then((usuarios) => res.send(usuarios));
-});
-
 // Eliminar usuarios
 router.delete("/:userId", (req, res) => {
-  // if (!req.user.isAdmin) {
-  //   return res.status(403).send("No tienes permiso para realizar esta acción");
-  // }
   User.findByPk(req.params.userId).then((user) =>
     !user
       ? res.status(404).send("El usuario no existe")
