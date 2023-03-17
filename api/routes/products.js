@@ -4,7 +4,6 @@ const { User } = require("../models");
 const router = express.Router();
 const Products = require("../models/Product");
 const Category = require("../models/Category");
-const { Op } = require("sequelize");
 
 router.get("/", (req, res) => {
   Products.findAll().then((products) => res.json(products));
