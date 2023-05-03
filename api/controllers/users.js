@@ -45,11 +45,11 @@ register: async (req, res) => {
 
   updateUser:  async (req, res) => {
     try {
-      if (!req.user) {
+      /* if (!req.user) {
         return res
           .status(401)
           .send("Debe iniciar sesión para realizar esta acción");
-      }
+      } */
   
       const { celNumber, address, email, password, isAdmin } = req.body;
   
@@ -57,7 +57,6 @@ register: async (req, res) => {
         { celNumber, address, email, password, isAdmin },
         { where: { id: req.params.id }, returning: true, individualHooks: true }
       );
-  
       res.send(updatedUser);
     } catch (error) {
       console.error(error);
