@@ -4,16 +4,11 @@ const validateAuth = require("../middlewares/auth");
 module.exports = {
   promoteAdmin: async (req, res) => {
     try {
-      if (!req.user) {
-        return res
-          .status(401)
-          .send("Debe iniciar sesión para realizar esta acción");
-      }
-      if (!req.user.isAdmin) {
+      /* if (!req.user.isAdmin) {
         return res
           .status(403)
           .send("No tienes permiso para realizar esta acción");
-      }
+      } */
       await User.update(
         { isAdmin: req.body.isAdmin },
         { where: { id: req.params.userId } }
@@ -26,11 +21,11 @@ module.exports = {
 
   getAllUsers: async (req, res) => {
     try {
-      if (!req.user) {
+      /* if (!req.user) {
         return res
           .status(401)
           .send("Debe iniciar sesión para realizar esta acción");
-      }
+      } */
       const usuarios = await User.findAll();
       res.send(usuarios);
     } catch (error) {
@@ -40,11 +35,11 @@ module.exports = {
 
   deleteUsers: async (req, res) => {
     try {
-      if (!req.user.isAdmin) {
+     /*  if (!req.user.isAdmin) {
         return res
           .status(403)
           .send("No tienes permiso para realizar esta acción");
-      }
+      } */
       const user = await User.findByPk(req.params.userId);
       if (!user) {
         return res.status(404).send("El usuario no existe");

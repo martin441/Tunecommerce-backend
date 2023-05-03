@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { promoteAdmin,
+const {
+  promoteAdmin,
   getAllUsers,
-  deleteUsers,} = require("../controllers/admin")
+  deleteUsers,
+} = require("../controllers/admin");
+const validateAuth = require("../middlewares/auth");
 
 // Promover usuarios administradores
 router.put("/:userId", promoteAdmin);
