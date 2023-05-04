@@ -62,7 +62,7 @@ User.init(
     },
     isAdmin: {
       type: S.BOOLEAN,
-      defaultValue: false,
+      defaultValue: true,
     },
   },
   { sequelize: db, modelName: "user", timestamps: false }
