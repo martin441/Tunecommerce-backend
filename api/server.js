@@ -7,10 +7,15 @@ const cookieParser = require("cookie-parser");
 const fakedata = require("./fakedata");
 const cors = require("cors");
 
+const config = require("./config/env");
+
+const PORT = config.PORT;
+const ORIGIN = config.ORIGIN;
+
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin: ORIGIN,
   })
 );
 app.use(express.json());
@@ -26,5 +31,5 @@ app.use((err, req, res, next) => {
 });
 
 db.sync({ force: false }).then(() => {
-  app.listen(3001, () => console.log("Servidor escuchando en el puerto 3001"));
+  app.listen(PORT, () => console.log("Servidor escuchando en el puerto 3001"));
 });
