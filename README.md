@@ -1,8 +1,8 @@
 # Tunecommerce-backend
 
-Repositorio Equipo4 - Tunecommerce - Backend
+Repositorio - Tunecommerce - Backend
 
-Desarrollado por el Equipo 4 en un lapso de dos semanas del mes de Marzo para el ecommerce Tunecommerce.
+Creado entre 6 desarrolladores en un lapso de dos semanas a principio del mes de Marzo de 2023.
  Utilizamos:
 * Node.js
 * Express
