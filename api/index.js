@@ -4,7 +4,7 @@ const db = require("./config");
 const models = require("./models/index");
 const routes = require("./routes");
 const cookieParser = require("cookie-parser");
-const fakedata = require("./fakedata");
+// const fakedata = require("./fakedata");
 const cors = require("cors");
 
 require("dotenv").config();
