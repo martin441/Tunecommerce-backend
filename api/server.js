@@ -7,10 +7,10 @@ const cookieParser = require("cookie-parser");
 const fakedata = require("./fakedata");
 const cors = require("cors");
 
-const config = require("./config/env");
+require("dotenv").config();
 
-const PORT = config.PORT;
-const ORIGIN = config.ORIGIN;
+const PORT = process.env.PORT || 3001;
+const ORIGIN = process.env.ORIGIN || "http://localhost:3000";
 
 app.use(
   cors({
