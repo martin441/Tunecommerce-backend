@@ -8,13 +8,16 @@ module.exports = {
 
 register: async (req, res) => {
     try {
+      console.log("REQBODY,", req.body)
       const user = await User.create(req.body);
       res.status(201).send(user);
+      console.log(user, "USER")
     } catch (error) {
-      console.error(error);
+     // console.error(error);
       res.status(500).send("Internal Server Error");
     }
   },
+
   login: async (req, res, next) => {
     const { email, password } = req.body;
     try {
