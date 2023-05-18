@@ -47,7 +47,7 @@ User.init(
       allowNull: false,
     },
     celnumber: {
-      type: S.STRING,
+      type: S.INTEGER,
       allowNull: false,
     },
     password: {
