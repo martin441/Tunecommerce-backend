@@ -13,7 +13,7 @@ register: async (req, res) => {
       res.status(201).send(user);
       console.log(user, "USER")
     } catch (error) {
-     // console.error(error);
+      console.error(error);
       res.status(500).send("Internal Server Error");
     }
   },
@@ -53,9 +53,9 @@ register: async (req, res) => {
           .status(401)
           .send("Debe iniciar sesión para realizar esta acción");
       } */
-  
+
       const { celNumber, address, email, password, isAdmin } = req.body;
-  
+
       const [_, [updatedUser]] = await User.update(
         { celNumber, address, email, password, isAdmin },
         { where: { id: req.params.id }, returning: true, individualHooks: true }
