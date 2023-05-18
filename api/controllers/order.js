@@ -59,19 +59,19 @@ module.exports = {
         include: [{ model: User }],
       });
       await order.setUser(user);
-  
+
       const cart = await Cart.findOne({
         where: {
           userId: req.params.userId,
         },
       });
-  
+
       const cartItems = await Cartitem.findAll({
         where: {
           cartId: cart.id,
         },
       });
-  
+
       await Promise.all(
         cartItems.map(async (item) => {
           await Orderitem.create(
@@ -89,10 +89,10 @@ module.exports = {
           });
         })
       );
-  
+
       await transporter.sendMail({
         from: "tunecommerce@hotmail.com", // cambiar por  ${admin.email}
-        to: `matute_98ca@hotmail.com`, //cambiar por ${user.email}
+        to: `neilen.monlezun@gmail.com`, //cambiar por ${user.email}
         subject: "🎸Confirmacion de compra🎸",
         html: `<p><b>Has confirmado tu compra en TUNEcommerce</b></p>
                   <p>Muchas gracias por confiar en nosotros.</p>
@@ -118,7 +118,7 @@ module.exports = {
         }
       );
       const user = await User.findByPk(req.params.userId);
-  
+
       await transporter.sendMail({
         from: "tunecommerce@hotmail.com", // cambiar por  ${admin.email}
         to: `matute_98ca@hotmail.com`, //cambiar por ${user.email}
@@ -127,12 +127,12 @@ module.exports = {
         <p>Muchas gracias por confiar en TUNEcommerce.</p>
         <img src="https://cdn.discordapp.com/attachments/1057795547429347421/1083762813098541218/image.png"/>`,
       });
-  
+
       res.send(updatedOrder).status(200);
     } catch (err) {
       console.error(err);
       res.status(500).send("Internal Server Error");
     }
   },
-  
+
 };
